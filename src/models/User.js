@@ -1,22 +1,21 @@
-const mognoose = require("mongoose");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const bcrypt = require("bcrypt");
-
-const userSchema = new mognoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 
-userSchema.pre("save", function (next) {
+userSchema.pre('save', function(next) {
   const user = this;
-  if (!user.isModified("password")) {
+  if (!user.isModified('password')) {
     return next();
   }
 
@@ -35,13 +34,15 @@ userSchema.pre("save", function (next) {
   });
 });
 
-userSchema.methods.comparePassword = function (candidatePassword) {
+userSchema.methods.comparePassword = function(candidatePassword) {
   const user = this;
+
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
       if (err) {
         return reject(err);
       }
+
       if (!isMatch) {
         return reject(false);
       }
@@ -51,4 +52,4 @@ userSchema.methods.comparePassword = function (candidatePassword) {
   });
 };
 
-mognoose.model("User", userSchema);
+mongoose.model('User', userSchema);
