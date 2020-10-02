@@ -8,7 +8,7 @@ const trackRoutes = require("./routes/trackRoutes");
 const requireAuth = require("./middlewares/requireAuth");
 
 const app = express();
-
+//server is completed !!!!!!
 app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(trackRoutes);
